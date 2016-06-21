@@ -474,12 +474,17 @@ namespace MatterHackers.MatterControl
 			string channel = UserSettings.Instance.get("UpdateFeedType");
 			if (string.IsNullOrEmpty(channel) || channel != "release" || OemSettings.Instance.WindowTitleExtra == "Experimental")
 #endif
-			{
+            {
 				System.Windows.Forms.Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 			}
 
-			MatterControlApplication app = MatterControlApplication.Instance;
+            while (!LoginWindow.LoggedIn)
+            {
+                LoginWindow.Create();
+            }
+
+            MatterControlApplication app = MatterControlApplication.Instance;
 		}
 
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
